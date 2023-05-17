@@ -27,3 +27,19 @@ class Redev(CMakePackage):
         if 'sst' in self.spec["adios2"]:
             args.append(self.define("ADIOS2_HAVE_SST", True))
         return args
+
+    # modify the default behavior in lib/spack/build_systems/cmake.py
+    # to not use parallel builds
+    def check(self):
+        """Searches the CMake-generated Makefile for the target ``test``
+        and runs it if found.
+        """
+        with working_dir(self.build_directory):
+            if self.generator == 'Unix Makefiles':
+                self._if_make_target_execute('test',
+                                             jobs_env='CTEST_PARALLEL_LEVEL',parallel=False)
+                self._if_make_target_execute('check',parallel=False)
+            elif self.generator == 'Ninja':
+                self._if_ninja_target_execute('test',
+                                              jobs_env='CTEST_PARALLEL_LEVEL',parallel=False)
+                self._if_ninja_target_execute('check',parallel=False)
