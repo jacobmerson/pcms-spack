@@ -21,6 +21,7 @@ class Redev(CMakePackage):
 
     depends_on('mpi')
     depends_on('adios2@2.7.1:')
+    depends_on('perfstubs')
 
     def cmake_args(self):
         args = []
