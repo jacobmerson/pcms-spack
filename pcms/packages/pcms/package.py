@@ -32,8 +32,8 @@ class Pcms(CMakePackage):
     depends_on('perfstubs')
 
     resource(name='testdata',
-            git='https://github.com/SCOREC/wdmapp_testcases',
-            branch='master',
+            git='https://github.com/jacobmerson/pcms_testcases',
+            branch='main',
             destination='testdata')
 
     def cmake_args(self):
