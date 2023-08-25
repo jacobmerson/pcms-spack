@@ -27,6 +27,8 @@ class Redev(CMakePackage):
         args = []
         if 'sst' in self.spec["adios2"]:
             args.append(self.define("ADIOS2_HAVE_SST", True))
+        perfstub_prefix = self.spec["perfstubs"].home
+        args.append(self.define("perfstubs_DIR",f"{perfstub_prefix}/lib64/cmake"))
         return args
 
     # modify the default behavior in lib/spack/build_systems/cmake.py

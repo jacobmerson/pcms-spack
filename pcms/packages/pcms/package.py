@@ -32,7 +32,7 @@ class Pcms(CMakePackage):
     depends_on('perfstubs')
 
     resource(name='testdata',
-            git='https://github.com/jacobmerson/pcms_testcases',
+            git='https://github.com/jacobmerson/pcms_testcases.git',
             branch='main',
             destination='testdata')
 
@@ -46,6 +46,8 @@ class Pcms(CMakePackage):
                 self.define('WDMCPL_ENABLE_Fortran', True),
                 self.define('WDMCPL_TEST_DATA_DIR', self.stage.source_path+'/testdata')
                 ]
+        perfstub_prefix = self.spec["perfstubs"].home
+        args.append(self.define("perfstubs_DIR",f"{perfstub_prefix}/lib64/cmake"))
         return args
 
     # modify the default behavior in lib/spack/build_systems/cmake.py
