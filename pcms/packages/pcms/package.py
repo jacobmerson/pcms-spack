@@ -37,7 +37,7 @@ class Pcms(CMakePackage):
     resource(name='testdata',
             git='https://github.com/jacobmerson/pcms_testcases.git',
             branch='main',
-            destination='testdata')
+            placement='testdata')
 
     def cmake_args(self):
         prefix = "PCMS"
