@@ -29,7 +29,7 @@ class Pcms(CMakePackage):
     depends_on('omega-h@scorec.10.6.0+kokkos',when="+omega-h",type=('build','link','run'))
     depends_on('fftw',type=('build','link','run'))
     depends_on('catch2@3:', when='@0.0.6:+tests',type=('build','link','run'))
-    depends_on('catch2@2:2.99:', when='@:0.0.5+tests',type=('build','link','run'))
+    depends_on('catch2@2:2.99', when='@:0.0.5+tests',type=('build','link','run'))
     depends_on('perfstubs',type=('build','link','run'))
 
     resource(name='testdata',
