@@ -21,15 +21,16 @@ class Pcms(CMakePackage):
     variant('client', default=True, description='enable pcms client code')
     variant('server', default=True, description='enable pcms client code')
     variant('tests', default=True, description='enable test cases')
+    variant('shared', default=True, description='enable shared library builds')
 
     depends_on('redev@main', when='@develop')
-    depends_on('redev@4.3.1:')
-    depends_on('kokkos')
-    depends_on('omega-h@scorec.10.6.0+kokkos',when="+omega-h")
-    depends_on('fftw')
-    #depends_on('catch2@2:2.99', when='+tests')
-    depends_on('catch2@3:', when='+tests')
-    depends_on('perfstubs')
+    depends_on('redev@4.3.1:',type=('build','link','run'))
+    depends_on('kokkos', type=('build','link','run'))
+    depends_on('omega-h@scorec.10.6.0+kokkos',when="+omega-h",type=('build','link','run'))
+    depends_on('fftw',type=('build','link','run'))
+    depends_on('catch2@3:', when='@0.0.6:+tests',type=('build','link','run'))
+    depends_on('catch2@2:2.99:', when='@:0.0.5+tests',type=('build','link','run'))
+    depends_on('perfstubs',type=('build','link','run'))
 
     resource(name='testdata',
             git='https://github.com/jacobmerson/pcms_testcases.git',
@@ -37,17 +38,20 @@ class Pcms(CMakePackage):
             destination='testdata')
 
     def cmake_args(self):
+        prefix = "PCMS"
+        if self.spec.satisfies("@:0.0.5"):
+            prefix = "WDMCPL"
         args = [
-                self.define_from_variant("WDMCPL_ENABLE_OMEGA_H", 'omega-h'),
-                self.define_from_variant("WDMCPL_ENABLE_SERVER", 'server'),
-                self.define_from_variant("WDMCPL_ENABLE_CLIENT", 'client'),
+                self.define_from_variant(f"{prefix}_ENABLE_OMEGA_H", 'omega-h'),
+                self.define_from_variant(f"{prefix}_ENABLE_SERVER", 'server'),
+                self.define_from_variant(f"{prefix}_ENABLE_CLIENT", 'client'),
                 self.define_from_variant("BUILD_TESTING", 'tests'),
-                self.define('WDMCPL_ENABLE_C', True),
-                self.define('WDMCPL_ENABLE_Fortran', True),
-                self.define('WDMCPL_TEST_DATA_DIR', self.stage.source_path+'/testdata')
+                self.define_from_variant("BUILD_SHARED_LIBS", 'shared'),
+                self.define(f'{prefix}_ENABLE_C', True),
+                self.define(f'{prefix}_ENABLE_Fortran', True),
+                self.define(f'{prefix}_TEST_DATA_DIR', self.stage.source_path+'/testdata')
                 ]
-        perfstub_prefix = self.spec["perfstubs"].home
-        args.append(self.define("perfstubs_DIR",f"{perfstub_prefix}/lib64/cmake"))
+        args.append(self.define("perfstubs_DIR",self.spec["perfstubs"].libs.directories[0] + "/cmake" ))
         return args
 
     # modify the default behavior in lib/spack/build_systems/cmake.py

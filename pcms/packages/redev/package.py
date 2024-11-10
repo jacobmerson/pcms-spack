@@ -19,6 +19,8 @@ class Redev(CMakePackage):
     version('4.3.1', tag='v4.3.1')
     version('main', branch='main')
 
+    variant('shared', default=True, description='enable shared library builds')
+
     depends_on('mpi')
     depends_on('adios2@2.7.1:')
     depends_on('perfstubs')
@@ -27,8 +29,8 @@ class Redev(CMakePackage):
         args = []
         if 'sst' in self.spec["adios2"]:
             args.append(self.define("ADIOS2_HAVE_SST", True))
-        perfstub_prefix = self.spec["perfstubs"].home
-        args.append(self.define("perfstubs_DIR",f"{perfstub_prefix}/lib64/cmake"))
+        args.append(self.define("perfstubs_DIR",self.spec["perfstubs"].libs.directories[0]+"/cmake"))
+        args.append(self.define_from_variant("BUILD_SHARED_LIBS", 'shared'))
         return args
 
     # modify the default behavior in lib/spack/build_systems/cmake.py
