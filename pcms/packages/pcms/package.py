@@ -23,6 +23,7 @@ class Pcms(CMakePackage):
     variant('server', default=True, description='enable pcms client code')
     variant('tests', default=True, description='enable test cases')
     variant('shared', default=True, description='enable shared library builds')
+    variant('fortran', default=True, description='enable fortran interfaces')
 
     depends_on('redev@main', when='@develop')
     depends_on('redev@4.3.1:',type=('build','link','run'))
@@ -32,12 +33,12 @@ class Pcms(CMakePackage):
     depends_on('catch2@3:', when='@0.0.6:+tests',type=('build','link','run'))
     depends_on('catch2@2:2.99', when='@:0.0.5+tests',type=('build','link','run'))
     depends_on('perfstubs',type=('build','link','run'))
-    
+    depends_on('adios2+fortran@2.7.1:',when="+fortran",type=('build', 'link','run'))
 
     resource(name='testdata',
             git='https://github.com/jacobmerson/pcms_testcases.git',
             branch='main',
-            destination='testdata')
+            placement='testdata')
 
     def cmake_args(self):
         prefix = "PCMS"
@@ -50,7 +51,7 @@ class Pcms(CMakePackage):
                 self.define_from_variant("BUILD_TESTING", 'tests'),
                 self.define_from_variant("BUILD_SHARED_LIBS", 'shared'),
                 self.define(f'{prefix}_ENABLE_C', True),
-                self.define(f'{prefix}_ENABLE_Fortran', True),
+                self.define_from_variant(f'{prefix}_ENABLE_Fortran', 'fortran'),
                 self.define(f'{prefix}_TEST_DATA_DIR', self.stage.source_path+'/testdata')
                 ]
         args.append(self.define("perfstubs_DIR",self.spec["perfstubs"].libs.directories[0] + "/cmake" ))
