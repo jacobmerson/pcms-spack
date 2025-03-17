@@ -10,23 +10,29 @@
 # next to all the things you'll want to change. Once you've handled
 # them, you can save this file and test your package like this:
 #
-#     spack install py-dill
+#     spack install py-effis-git
 #
 # You can edit this file again by typing:
 #
-#     spack edit py-dill
+#     spack edit py-effis-git
 #
 # See the Spack documentation for more information on packaging.
 # ----------------------------------------------------------------------------
 
+from spack_repo.builtin.build_systems.python import PythonPackage
 from spack.package import *
 
 
-class PyDill(PythonPackage):
-    """dill extends Python’s pickle module for serializing and de-serializing Python objects to the majority of the built-in Python types."""
+class PyEffis(PythonPackage):
+    """FIXME: Put a proper description of your package here."""
 
-    homepage = "https://pypi.org/project/dill"
-    pypi = "dill/dill-0.3.9.tar.gz"
+    # FIXME: Add a proper url for your package's homepage here.
+    homepage = "https://www.example.com"
+
+    # FIXME: ensure the package is not available through PyPI. If it is,
+    # re-run `spack create --force` with the PyPI URL.
+    url = "https://github.com/wdmapp/effis.git"
+    git = "https://github.com/wdmapp/effis.git"
 
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
@@ -35,19 +41,12 @@ class PyDill(PythonPackage):
     # FIXME: Add the SPDX identifier of the project's license below.
     # See https://spdx.org/licenses/ for a list. Upon manually verifying
     # the license, set checked_by to your Github username.
-    license("BSD-3", checked_by="github_user1")
+    license("UNKNOWN", checked_by="github_user1")
 
-    version("0.3.9", sha256="81aa267dddf68cbfe8029c42ca9ec6a4ab3b22371d1c450abc54422577b4512c")
+    version('master', branch='master')
 
-    # FIXME: Add a build backend, usually defined in pyproject.toml. If no such file
-    # exists, use setuptools.
-    depends_on("py-setuptools@42:", type="build")
+    depends_on("py-setuptools", type="build")
 
-    # FIXME: Add additional dependencies if required.
-    #depends_on("py-ctypes", type=("build", "run"))
-
-    #def config_settings(self, spec, prefix):
-    #    # FIXME: Add configuration settings to be passed to the build backend
-    #    # FIXME: If not needed, delete this function
-    #    settings = {}
-    #    return settings
+    depends_on("py-globus-sdk", type=("build", "run"))
+    depends_on("py-dill", type=("build", "run"))
+    depends_on("py-pyyaml", type=("build", "run"))

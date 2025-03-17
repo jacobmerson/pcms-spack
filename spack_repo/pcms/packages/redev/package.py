@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 #from spack import *
+from spack_repo.builtin.build_systems.cmake import CMakePackage
 from spack.package import *
 
 class Redev(CMakePackage):
@@ -25,6 +26,8 @@ class Redev(CMakePackage):
     depends_on('mpi')
     depends_on('adios2@2.7.1:')
     depends_on('perfstubs')
+    depends_on('c')
+    depends_on('cxx')
 
     def cmake_args(self):
         args = []

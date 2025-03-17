@@ -10,19 +10,20 @@
 # next to all the things you'll want to change. Once you've handled
 # them, you can save this file and test your package like this:
 #
-#     spack install py-effis-git
+#     spack install py-geouned
 #
 # You can edit this file again by typing:
 #
-#     spack edit py-effis-git
+#     spack edit py-geouned
 #
 # See the Spack documentation for more information on packaging.
 # ----------------------------------------------------------------------------
 
+from spack_repo.builtin.build_systems.python import PythonPackage
 from spack.package import *
 
 
-class PyEffis(PythonPackage):
+class PyGeouned(PythonPackage):
     """FIXME: Put a proper description of your package here."""
 
     # FIXME: Add a proper url for your package's homepage here.
@@ -30,8 +31,8 @@ class PyEffis(PythonPackage):
 
     # FIXME: ensure the package is not available through PyPI. If it is,
     # re-run `spack create --force` with the PyPI URL.
-    url = "https://github.com/wdmapp/effis.git"
-    git = "https://github.com/wdmapp/effis.git"
+    url = "https://github.com/GEOUNED-org/GEOUNED/archive/refs/tags/1.6.0.tar.gz"
+    git = "https://github.com/GEOUNED-org/GEOUNED.git"
 
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
@@ -42,10 +43,9 @@ class PyEffis(PythonPackage):
     # the license, set checked_by to your Github username.
     license("UNKNOWN", checked_by="github_user1")
 
-    version('master', branch='master')
+    version("1.6.0", sha256="90e76713edda5e86a5cf785cc8f2e1253ceeef4302e0658bd1bbdd6719142654")
 
     depends_on("py-setuptools", type="build")
 
-    depends_on("py-globus-sdk", type=("build", "run"))
-    depends_on("py-dill", type=("build", "run"))
-    depends_on("py-pyyaml", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))
+    depends_on("py-tqdm", type=("build", "run"))

@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 #from spack import *
+from spack_repo.builtin.build_systems.cmake import CMakePackage
 from spack.package import *
 
 
@@ -35,6 +36,9 @@ class Pcms(CMakePackage):
     depends_on('catch2@2:2.99', when='@:0.0.5+tests',type=('build','link','run'))
     depends_on('perfstubs',type=('build','link','run'))
     depends_on('adios2+fortran@2.7.1:',when="+fortran",type=('build', 'link','run'))
+    depends_on('c')
+    depends_on('cxx')
+    depends_on('fortran', when='+fortran')
 
     resource(name='testdata',
             git='https://github.com/jacobmerson/pcms_testcases.git',
