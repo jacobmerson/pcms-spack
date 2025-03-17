@@ -28,6 +28,7 @@ class Pcms(CMakePackage):
     depends_on('redev@main', when='@develop')
     depends_on('redev@4.3.1:',type=('build','link','run'))
     depends_on('kokkos', type=('build','link','run'))
+    depends_on('kokkos-kernels', type=('build','link','run'))
     depends_on('omega-h@10.8.6-scorec+kokkos~trilinos',when="+omega-h",type=('build','link','run'))
     #depends_on('fftw',type=('build','link','run'))
     depends_on('catch2@3:', when='@0.0.6:+tests',type=('build','link','run'))
