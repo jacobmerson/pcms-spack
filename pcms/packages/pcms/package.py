@@ -3,7 +3,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack import *
+#from spack import *
+from spack.package import *
 
 
 class Pcms(CMakePackage):
@@ -26,11 +27,12 @@ class Pcms(CMakePackage):
     depends_on('redev@main', when='@develop')
     depends_on('redev@4.3.1:',type=('build','link','run'))
     depends_on('kokkos', type=('build','link','run'))
-    depends_on('omega-h@scorec.10.6.0+kokkos',when="+omega-h",type=('build','link','run'))
-    depends_on('fftw',type=('build','link','run'))
+    depends_on('omega-h@10.8.6-scorec+kokkos~trilinos',when="+omega-h",type=('build','link','run'))
+    #depends_on('fftw',type=('build','link','run'))
     depends_on('catch2@3:', when='@0.0.6:+tests',type=('build','link','run'))
     depends_on('catch2@2:2.99', when='@:0.0.5+tests',type=('build','link','run'))
     depends_on('perfstubs',type=('build','link','run'))
+    
 
     resource(name='testdata',
             git='https://github.com/jacobmerson/pcms_testcases.git',
