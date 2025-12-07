@@ -30,18 +30,19 @@ class Pcms(CMakePackage):
     depends_on('redev@4.3.1:',type=('build','link','run'))
     depends_on('kokkos', type=('build','link','run'))
     depends_on('kokkos-kernels', type=('build','link','run'))
-    depends_on('omega-h@10.8.6-scorec+kokkos~trilinos',when="+omega-h",type=('build','link','run'))
+    depends_on('omega-h@10.9.0-scorec+kokkos~trilinos+mpi',when="+omega-h",type=('build','link','run'))
     #depends_on('fftw',type=('build','link','run'))
     depends_on('catch2@3:', when='@0.0.6:+tests',type=('build','link','run'))
     depends_on('catch2@2:2.99', when='@:0.0.5+tests',type=('build','link','run'))
     depends_on('perfstubs',type=('build','link','run'))
     depends_on('adios2+fortran@2.7.1:',when="+fortran",type=('build', 'link','run'))
+    depends_on('meshfields', when="@develop")
     depends_on('c')
     depends_on('cxx')
     depends_on('fortran', when='+fortran')
 
     resource(name='testdata',
-            git='https://github.com/jacobmerson/pcms_testcases.git',
+            git='https://github.com/SCOREC/pcms_testcases.git',
             branch='main',
             placement='testdata')
 
