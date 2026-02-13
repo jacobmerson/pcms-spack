@@ -35,14 +35,18 @@ class Meshfields(CMakePackage):
 
     version('main', branch='main')
 
+    variant('shared', default=False, description='enable shared library builds')
+
     depends_on('cxx')
     depends_on('cabana', type=('build', 'link', 'run'))
     depends_on('kokkos', type=('build','link','run'))
-    depends_on('omega-h@10.8.6-scorec:10.9.0-scorec+kokkos~trilinos',type=('build','link','run'))
+    depends_on('omega-h@11.0.0-scorec:+kokkos+mpi',type=('build','link','run'))
 
     def cmake_args(self):
         # FIXME: Add arguments other than
         # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
         # FIXME: If not needed delete this function
-        args = []
+        args = [
+            self.define_from_variant("BUILD_SHARED_LIBS", 'shared')
+        ]
         return args
