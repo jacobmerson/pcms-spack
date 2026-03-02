@@ -25,21 +25,27 @@ class Pcms(CMakePackage):
     variant('tests', default=True, description='enable test cases')
     variant('shared', default=True, description='enable shared library builds')
     variant('fortran', default=True, description='enable fortran interfaces')
+    variant('python', default=False, description='enable python interfaces')
 
     depends_on('redev@main', when='@develop')
     depends_on('redev@4.3.1:',type=('build','link','run'))
     depends_on('kokkos', type=('build','link','run'))
     depends_on('kokkos-kernels', type=('build','link','run'))
-    depends_on('omega-h@10.9.0-scorec+kokkos~trilinos+mpi',when="+omega-h",type=('build','link','run'))
+    depends_on('omega-h@11.0.0-scorec:+kokkos+mpi',when="+omega-h",type=('build','link','run'))
     #depends_on('fftw',type=('build','link','run'))
     depends_on('catch2@3:', when='@0.0.6:+tests',type=('build','link','run'))
     depends_on('catch2@2:2.99', when='@:0.0.5+tests',type=('build','link','run'))
     depends_on('perfstubs',type=('build','link','run'))
-    depends_on('adios2+fortran@2.7.1:',when="+fortran",type=('build', 'link','run'))
+    depends_on('adios2+fortran@2.10.2',when="+fortran",type=('build', 'link','run'))
+    depends_on('meshfields+shared', when="@develop+python")
     depends_on('meshfields', when="@develop")
     depends_on('c')
     depends_on('cxx')
     depends_on('fortran', when='+fortran')
+    depends_on('python', when='+python')
+    depends_on('py-pybind11', type='build', when='+python')
+
+    extends('python', when='+python')
 
     resource(name='testdata',
             git='https://github.com/SCOREC/pcms_testcases.git',
@@ -56,8 +62,10 @@ class Pcms(CMakePackage):
                 self.define_from_variant(f"{prefix}_ENABLE_CLIENT", 'client'),
                 self.define_from_variant("BUILD_TESTING", 'tests'),
                 self.define_from_variant("BUILD_SHARED_LIBS", 'shared'),
+                self.define(f'{prefix}_ENABLE_SPDLOG', False),
                 self.define(f'{prefix}_ENABLE_C', True),
                 self.define_from_variant(f'{prefix}_ENABLE_Fortran', 'fortran'),
+                self.define_from_variant(f'{prefix}_ENABLE_Python', 'python'),
                 self.define(f'{prefix}_TEST_DATA_DIR', self.stage.source_path+'/testdata')
                 ]
         args.append(self.define("perfstubs_DIR",self.spec["perfstubs"].libs.directories[0] + "/cmake" ))
