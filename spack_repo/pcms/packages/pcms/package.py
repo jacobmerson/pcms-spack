@@ -38,6 +38,7 @@ class Pcms(CMakePackage):
     depends_on('perfstubs',type=('build','link','run'))
     depends_on('adios2+fortran@2.10.2',when="+fortran",type=('build', 'link','run'))
     depends_on('meshfields+shared', when="@develop+python")
+    depends_on('meshfields+shared', when="+shared")
     depends_on('meshfields', when="@develop")
     depends_on('c')
     depends_on('cxx')
