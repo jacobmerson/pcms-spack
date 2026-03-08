@@ -45,6 +45,7 @@ class Pcms(CMakePackage):
     depends_on('fortran', when='+fortran')
     depends_on('python', when='+python')
     depends_on('py-pybind11', type='build', when='+python')
+    depends_on('py-numpy', type=('build','link','run'), when='+python')
 
     extends('python', when='+python')
 
