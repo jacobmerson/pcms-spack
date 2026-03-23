@@ -18,6 +18,7 @@ class Pcms(CMakePackage):
     #version('0.0.5', tag='v0.0.5') 
     version('0.0.5', commit='12d609cc2622c62b7d43263812fb8403a0a5f6ef')
     version('develop', branch='develop')
+    version('xgc', commit='dfa7402ef44fc61461805c3f9b332674c76f8498')
 
     variant('omega-h', default=True, description='enable Omega-h for unstructured meshes')
     variant('client', default=True, description='enable pcms client code')
@@ -27,7 +28,7 @@ class Pcms(CMakePackage):
     variant('fortran', default=True, description='enable fortran interfaces')
     variant('python', default=False, description='enable python interfaces')
 
-    depends_on('redev@main', when='@develop')
+    depends_on('redev@main', when='@develop,xgc')
     depends_on('redev@4.3.1:',type=('build','link','run'))
     depends_on('kokkos', type=('build','link','run'))
     depends_on('kokkos-kernels', type=('build','link','run'))
@@ -39,7 +40,8 @@ class Pcms(CMakePackage):
     depends_on('adios2+fortran@2.10.2',when="+fortran",type=('build', 'link','run'))
     depends_on('meshfields+shared', when="@develop+python")
     depends_on('meshfields+shared', when="+shared")
-    depends_on('meshfields', when="@develop")
+    depends_on('meshfields', when='@develop,xgc')
+    depends_on('spdlog+shared', when="@xgc")
     depends_on('c')
     depends_on('cxx')
     depends_on('fortran', when='+fortran')
@@ -56,7 +58,7 @@ class Pcms(CMakePackage):
 
     def cmake_args(self):
         prefix = "PCMS"
-        if self.spec.satisfies("@:0.0.5"):
+        if self.spec.satisfies("@:0.0.5") and not self.spec.satisfies("@xgc"):
             prefix = "WDMCPL"
         args = [
                 self.define_from_variant(f"{prefix}_ENABLE_OMEGA_H", 'omega-h'),
