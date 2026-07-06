@@ -19,6 +19,7 @@ class Pcms(CMakePackage):
     version('0.0.5', commit='12d609cc2622c62b7d43263812fb8403a0a5f6ef')
     version('develop', branch='develop')
     version('xgc', commit='dfa7402ef44fc61461805c3f9b332674c76f8498')
+    patch('exec_header_and_scratch_size_bug.patch', when='@xgc')
 
     variant('omega-h', default=True, description='enable Omega-h for unstructured meshes')
     variant('client', default=True, description='enable pcms client code')

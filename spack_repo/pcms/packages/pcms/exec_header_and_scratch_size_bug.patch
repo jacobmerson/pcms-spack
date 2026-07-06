@@ -1,0 +1,26 @@
+diff --git a/src/pcms/interpolator/interpolation_base.cpp b/src/pcms/interpolator/interpolation_base.cpp
+index 70d1011..8eba8af 100644
+--- a/src/pcms/interpolator/interpolation_base.cpp
++++ b/src/pcms/interpolator/interpolation_base.cpp
+@@ -5,8 +5,6 @@
+ #include "interpolation_base.h"
+ #include "interpolation_helpers.h"
+ 
+-#include <execution>
+-
+ Omega_h::Reals getCentroids(Omega_h::Mesh& mesh)
+ {
+   OMEGA_H_CHECK_PRINTF(
+diff --git a/src/pcms/interpolator/mls_interpolation_impl.hpp b/src/pcms/interpolator/mls_interpolation_impl.hpp
+index ab3b975..a6c4f93 100644
+--- a/src/pcms/interpolator/mls_interpolation_impl.hpp
++++ b/src/pcms/interpolator/mls_interpolation_impl.hpp
+@@ -469,7 +469,7 @@ void mls_interpolation(RealConstDefaultRank1View source_values,
+ 
+   // calculates the interpolated values
+   Kokkos::parallel_for(
+-    "MLS coefficients", tp.set_scratch_size(1, Kokkos::PerTeam(scratch_size)),
++    "MLS coefficients", tp.set_scratch_size(1, Kokkos::PerTeam(shared_size)),
+     KOKKOS_LAMBDA(const member_type& team) {
+       int league_rank = team.league_rank();
+       int start_ptr = support.supports_ptr[league_rank];
