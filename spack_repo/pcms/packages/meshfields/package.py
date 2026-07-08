@@ -40,7 +40,7 @@ class Meshfields(CMakePackage):
     depends_on('cxx')
     depends_on('cabana', type=('build', 'link', 'run'))
     depends_on('kokkos', type=('build','link','run'))
-    depends_on('omega-h@11.0.0-scorec:+kokkos+mpi',type=('build','link','run'))
+    depends_on('omega-h@11.0.0-scorec:+kokkos+mpi~trilinos',type=('build','link','run'))
 
     def cmake_args(self):
         # FIXME: Add arguments other than
